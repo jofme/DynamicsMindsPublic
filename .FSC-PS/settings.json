@@ -1,0 +1,6 @@
+{
+    "type":"FSCM",
+    "packageName": "DeployablePackage",
+    "buildVersion": "10.0.43",
+    "ciBranches": "main"
+}

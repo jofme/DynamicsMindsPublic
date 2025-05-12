@@ -1,0 +1,12 @@
+<EventHandlers>
+  <BusinessEventHandlers />
+  <DataEventHandlers />
+  <FormEventHandlers />
+  <FormControlEventHandlers>
+    <FormControlEventHandler formName="SysSecRolesEditUsers" formControlName="ADMViewQueryButton" formControlEventType="Clicked" eventHandlerElementName="ADMSysSecRolesEditUsers_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="ADMViewQueryButton_OnClicked" />
+  </FormControlEventHandlers>
+  <FormDataSourceEventHandler>
+    <FormDataSourceEventHandler formName="SysSecRolesEditUsers" formDataSourceName="UserInfo" formDataSourceEventType="QueryExecuted" eventHandlerElementName="ADMSysSecRolesEditUsers_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="userInfo_OnQueryExecuted" />
+  </FormDataSourceEventHandler>
+  <FormDataFieldEventHandler />
+</EventHandlers>

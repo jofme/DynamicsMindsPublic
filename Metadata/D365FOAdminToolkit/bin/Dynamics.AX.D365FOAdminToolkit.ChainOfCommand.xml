@@ -1,0 +1,17 @@
+<ChainOfCommand>
+  <ExtensionClass Name="ADMSysSecRolesEditUsers_AssignmentRulesButtons_Extension" ExtensionTarget="assignmentRulesButtons" ExtensionTargetType="ClassTypeId">
+    <Method ActualExtensionTarget="assignmentRulesButtons" IsStatic="False" CocMethodDelegateElementOwner="FormButtonGroupControl" IsFormNestedTargetConcept="True" CoCRootFormName="SysSecRolesEditUsers" CoCNestedElementKind="FormControl" IsCommonBaseMethodTarget="False" SupportsLazyInit="False">setEnabledState</Method>
+  </ExtensionClass>
+  <ExtensionClass Name="ADMSysQueryForm_Extension" ExtensionTarget="Form.SysQueryForm" ExtensionTargetType="FormTypeId">
+    <Method ActualExtensionTarget="Form.SysQueryForm" IsStatic="False" CocMethodDelegateElementOwner="SysQueryForm" IsFormNestedTargetConcept="False" CoCRootFormName="" CoCNestedElementKind="Class" IsCommonBaseMethodTarget="False" SupportsLazyInit="False">init</Method>
+  </ExtensionClass>
+  <ExtensionClass Name="ADMSysActiveDirectoryGroupImport_Form_Extension" ExtensionTarget="Form.SysActiveDirectoryGroupImport" ExtensionTargetType="FormTypeId">
+    <Method ActualExtensionTarget="Form.SysActiveDirectoryGroupImport" IsStatic="False" CocMethodDelegateElementOwner="SysActiveDirectoryGroupImport" IsFormNestedTargetConcept="False" CoCRootFormName="" CoCNestedElementKind="Class" IsCommonBaseMethodTarget="False" SupportsLazyInit="False">ImportGroups</Method>
+  </ExtensionClass>
+  <ExtensionClass Name="ADMSysSecRolesEditUsers_SecurityRoleAssignmentRule_Extension" ExtensionTarget="securityRoleAssignmentRule" ExtensionTargetType="ClassTypeId">
+    <Method ActualExtensionTarget="securityRoleAssignmentRule" IsStatic="False" CocMethodDelegateElementOwner="FormDataSource" IsFormNestedTargetConcept="True" CoCRootFormName="SysSecRolesEditUsers" CoCNestedElementKind="FormDataSource" IsCommonBaseMethodTarget="False" SupportsLazyInit="False">active</Method>
+  </ExtensionClass>
+  <ExtensionClass Name="ADMSysSecRoleAssignOM_Extension" ExtensionTarget="Form.SysSecRoleAssignOM" ExtensionTargetType="FormTypeId">
+    <Method ActualExtensionTarget="Form.SysSecRoleAssignOM" IsStatic="False" CocMethodDelegateElementOwner="SysSecRoleAssignOM" IsFormNestedTargetConcept="False" CoCRootFormName="" CoCNestedElementKind="Class" IsCommonBaseMethodTarget="False" SupportsLazyInit="False">init</Method>
+  </ExtensionClass>
+</ChainOfCommand>

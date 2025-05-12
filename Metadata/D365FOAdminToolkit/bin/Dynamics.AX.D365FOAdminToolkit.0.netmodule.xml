@@ -1,0 +1,28 @@
+<EventHandlers>
+  <BusinessEventHandlers>
+    <EventHandler delegateElementName="ApplicationStartupEventManager" delegateElementTypeId="ClassTypeId" delegateMethodName="onInteractiveSessionCreated" eventHandlerElementName="ADMEntraIdGroupUserSynchronization" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="onInteractiveSessionCreated" delegateTypeId="DelegateTypeId" />
+  </BusinessEventHandlers>
+  <DataEventHandlers>
+    <DataEventHandler tableName="SecurityUserRole" dataEventType="Inserted" eventHandlerElementName="ADMSecurityUserRole_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="SecurityUserRole_onInserted" />
+    <DataEventHandler tableName="SecurityUserRole" dataEventType="Updating" eventHandlerElementName="ADMSecurityUserRole_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="SecurityUserRole_onUpdating" />
+    <DataEventHandler tableName="SecurityUserRole" dataEventType="Deleting" eventHandlerElementName="ADMSecurityUserRole_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="SecurityUserRole_onDeleting" />
+    <DataEventHandler tableName="OMUserRoleOrganization" dataEventType="Inserted" eventHandlerElementName="ADMOMUserRoleOrganization_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="OMUserRoleOrganization_onInserted" />
+    <DataEventHandler tableName="OMUserRoleOrganization" dataEventType="Deleting" eventHandlerElementName="ADMOMUserRoleOrganization_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="OMUserRoleOrganization_onDeleting" />
+    <DataEventHandler tableName="UserInfo" dataEventType="Deleting" eventHandlerElementName="ADMUserInfo_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="UserInfo_onDeleting" />
+    <DataEventHandler tableName="SecurityUserRole" dataEventType="Inserted" eventHandlerElementName="ADMTableEvents" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="SecurityUserRole_onInserted" />
+    <DataEventHandler tableName="SecurityUserRole" dataEventType="Updating" eventHandlerElementName="ADMTableEvents" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="SecurityUserRole_onUpdating" />
+    <DataEventHandler tableName="SecurityUserRole" dataEventType="Deleted" eventHandlerElementName="ADMTableEvents" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="SecurityUserRole_onDeleted" />
+  </DataEventHandlers>
+  <FormEventHandlers />
+  <FormControlEventHandlers>
+    <FormControlEventHandler formName="ADMDisableUserReport" formControlName="StartDateControl" formControlEventType="Modified" eventHandlerElementName="ADMDisabledUsersReport_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="StartDateControl_OnModified" />
+    <FormControlEventHandler formName="ADMDisableUserReport" formControlName="EndDateControl" formControlEventType="Modified" eventHandlerElementName="ADMDisabledUsersReport_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="EndDateControl_OnModified" />
+    <FormControlEventHandler formName="ADMSysAdminReport" formControlName="StartDateControl" formControlEventType="Modified" eventHandlerElementName="ADMSysAdminReport_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="StartDateControl_OnModified" />
+    <FormControlEventHandler formName="ADMSysAdminReport" formControlName="EndDateControl" formControlEventType="Modified" eventHandlerElementName="ADMSysAdminReport_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="EndDateControl_OnModified" />
+    <FormControlEventHandler formName="SysSecRolesEditUsers" formControlName="ADMViewQueryButton" formControlEventType="Clicked" eventHandlerElementName="ADMSysSecRolesEditUsers_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="ADMViewQueryButton_OnClicked" />
+  </FormControlEventHandlers>
+  <FormDataSourceEventHandler>
+    <FormDataSourceEventHandler formName="SysSecRolesEditUsers" formDataSourceName="UserInfo" formDataSourceEventType="QueryExecuted" eventHandlerElementName="ADMSysSecRolesEditUsers_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="userInfo_OnQueryExecuted" />
+  </FormDataSourceEventHandler>
+  <FormDataFieldEventHandler />
+</EventHandlers>

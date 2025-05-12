@@ -1,0 +1,12 @@
+<EventHandlers>
+  <BusinessEventHandlers />
+  <DataEventHandlers>
+    <DataEventHandler tableName="SecurityUserRole" dataEventType="Inserted" eventHandlerElementName="ADMTableEvents" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="SecurityUserRole_onInserted" />
+    <DataEventHandler tableName="SecurityUserRole" dataEventType="Updating" eventHandlerElementName="ADMTableEvents" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="SecurityUserRole_onUpdating" />
+    <DataEventHandler tableName="SecurityUserRole" dataEventType="Deleted" eventHandlerElementName="ADMTableEvents" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="SecurityUserRole_onDeleted" />
+  </DataEventHandlers>
+  <FormEventHandlers />
+  <FormControlEventHandlers />
+  <FormDataSourceEventHandler />
+  <FormDataFieldEventHandler />
+</EventHandlers>

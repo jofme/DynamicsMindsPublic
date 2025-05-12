@@ -9,7 +9,7 @@ on:
         default: ''
         type: choice
         options:
-         - "EventManager"
+         - ""
 
       versionNumber:
         description: Updated Version Number.

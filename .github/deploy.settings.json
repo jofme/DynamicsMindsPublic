@@ -1,0 +1,6 @@
+{
+    "deploy": true,
+    "generatePackages" : true,
+    "uploadPackageToLCS":  true,
+    "cron":"0 21 * * *"
+}

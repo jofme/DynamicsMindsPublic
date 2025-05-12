@@ -1,0 +1,191 @@
+﻿name: (BUILD)
+
+on:
+  workflow_dispatch:
+   inputs:
+      version:
+        description: 'Select FSCM Version'
+        required: false
+        default: ''
+        type: choice
+        options:
+        - "*"
+        - "10.0.18"
+        - "10.0.19"
+        - "10.0.20"
+        - "10.0.21"
+        - "10.0.22"
+        - "10.0.23"
+        - "10.0.24"
+        - "10.0.25"
+        - "10.0.26"
+        - "10.0.27"
+        - "10.0.28"
+        - "10.0.29"
+        - "10.0.30"
+        - "10.0.31"
+        - "10.0.32"
+        - "10.0.33"
+        - "10.0.34"
+        - "10.0.35"
+        - "10.0.36"
+        - "10.0.37"
+        - "10.0.38"
+        - "10.0.39"
+        - "10.0.40"
+        - "10.0.41"
+        - "10.0.42"
+        - "10.0.43"
+        - "10.0.44"
+
+
+      includeTestModels:
+        type: boolean
+        default: false
+        description: Include test models
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: pwsh
+    
+env:
+  FORCE_COLOR: 3
+
+jobs:
+   Initialization:
+    runs-on: [windows-latest]
+    outputs:
+      type: ${{ steps.ReadSettings.outputs.type }}
+      source_branch: ${{ steps.ReadSettings.outputs.source_branch }}
+      versions: ${{ steps.ReadSettings.outputs.VersionsJson }}
+      environments: ${{ steps.ReadSettings.outputs.EnvironmentsJson }}
+      githubRunner: ${{ steps.ReadSettings.outputs.GitHubRunnerJson }}
+    steps:
+      - name: Support longpaths
+        run: git config --system core.longpaths true
+        
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Initialize the workflow
+        uses: fscpscollaborative/fscps.gh/WorkflowInitialize@v2.1
+        id: init
+        env:
+          secrets: ${{ toJson(secrets) }}    
+
+      - name: Read settings
+        id: ReadSettings
+        uses: fscpscollaborative/fscps.gh/ReadSettings@v2.1
+        with:
+          version: ${{ inputs.version }}
+          
+      - name: Check for updates to FSC-PS system files
+        uses: fscpscollaborative/fscps.gh/CheckForUpdates@v2.1
+        continue-on-error: true
+        with:
+          type: ${{ steps.ReadSettings.outputs.type }}
+          settingsJson: ${{ env.Settings }}
+          secretsJson: ${{ env.RepoSecrets }}
+
+   Build:
+    needs: [ Initialization ]
+    runs-on: ${{ fromJson(needs.Initialization.outputs.githubRunner) }}
+    strategy:
+      matrix:
+        version: ${{ fromJson(needs.Initialization.outputs.versions) }}
+      fail-fast: false
+    name: Build ${{ matrix.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+      
+      - name: Read settings
+        uses: fscpscollaborative/fscps.gh/ReadSettings@v2.1
+        with:
+          version: ${{ matrix.version }}
+          
+      - name: Read secrets
+        uses: fscpscollaborative/fscps.gh/ReadSecrets@v2.1
+        env:
+          secrets: ${{ toJson(secrets) }}       
+        with:
+          settingsJson: ${{ env.Settings }}
+          
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2.0.0
+        with:
+          nuget-version: 5.10.x    
+          
+      - name: Run pipeline
+        uses: fscpscollaborative/fscps.gh/RunPipeline@v2.1
+        id: runpipeline
+        with:
+          type: ${{ needs.Initialization.outputs.type}}
+          version: ${{ matrix.version }}
+          settingsJson: ${{ env.Settings }}
+          secretsJson: ${{ env.RepoSecrets }}
+
+      - name: Add logs to job summary
+        if: ${{ !cancelled() }}
+        run: |
+          if (![string]::IsNullOrEmpty("${{ env.ARTIFACTS_PATH }}")) {
+            $logFiles = Get-ChildItem -Path "${{ env.ARTIFACTS_PATH }}\Logs" -Recurse -Filter *.log
+            $summary = "# Logs `n`n"
+            if ($logFiles) {
+                foreach ($logFile in $logFiles) {
+                    $content = Get-Content -Path $logFile
+                    $summary += "## $logFile `n"
+                    foreach ($line in $content) {
+                        # if the line consists only of = or - characters 
+                        # (which would be interpreted as a setext heading 
+                        # (https://github.github.com/gfm/#setext-headings)), 
+                        # add a new line before it
+                        if ($line -match "^[=-]+$") {
+                            $summary += "`n$line`n"
+                        } else {
+                          $summary += $line + "`n"
+                        } 
+                    }
+                }
+            }
+            $summary >> $env:GITHUB_STEP_SUMMARY
+          }
+
+      - name: Publish artifacts  
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PACKAGE_NAME }}
+          path: ${{ env.ARTIFACTS_PATH }}
+          
+   PostProcess: 
+    if: ${{ !cancelled() }}
+    runs-on: ${{ fromJson(needs.Initialization.outputs.githubRunner) }}
+    needs: [ Initialization,  Build ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Read settings
+        uses: fscpscollaborative/fscps.gh/ReadSettings@v2.1
+
+      - name: Read secrets
+        uses: fscpscollaborative/fscps.gh/ReadSecrets@v2.1
+        env:
+          secrets: ${{ toJson(secrets) }}
+        with:
+          settingsJson: ${{ env.Settings }}
+          
+      - name: Finalize the workflow
+        id: PostProcess
+        uses: fscpscollaborative/fscps.gh/WorkflowPostProcess@v2.1
+        with:
+          remove_current: ${{ needs.Initialization.outputs.environments == '' }}
+          settingsJson: ${{ env.Settings }}
+          secretsJson: ${{ env.RepoSecrets }}

@@ -1,0 +1,7 @@
+<ExtensionClasses>
+  <ExtensionClass ExtensionClassName="ADMSysSecRolesEditUsers_AssignmentRulesButtons_Extension" ExtensionTargetName="SysSecRolesEditUsers" ExtensionTargetTypeId="FormControlTypeId" ExtensionNestedTargetName="assignmentRulesButtons" />
+  <ExtensionClass ExtensionClassName="ADMSysQueryForm_Extension" ExtensionTargetName="SysQueryForm" ExtensionTargetTypeId="FormTypeId" ExtensionNestedTargetName="" />
+  <ExtensionClass ExtensionClassName="ADMSysActiveDirectoryGroupImport_Form_Extension" ExtensionTargetName="SysActiveDirectoryGroupImport" ExtensionTargetTypeId="FormTypeId" ExtensionNestedTargetName="" />
+  <ExtensionClass ExtensionClassName="ADMSysSecRolesEditUsers_SecurityRoleAssignmentRule_Extension" ExtensionTargetName="SysSecRolesEditUsers" ExtensionTargetTypeId="FormDataSourceTypeId" ExtensionNestedTargetName="securityRoleAssignmentRule" />
+  <ExtensionClass ExtensionClassName="ADMSysSecRoleAssignOM_Extension" ExtensionTargetName="SysSecRoleAssignOM" ExtensionTargetTypeId="FormTypeId" ExtensionNestedTargetName="" />
+</ExtensionClasses>

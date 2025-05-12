@@ -1,0 +1,11 @@
+<EventHandlers>
+  <BusinessEventHandlers />
+  <DataEventHandlers>
+    <DataEventHandler tableName="OMUserRoleOrganization" dataEventType="Inserted" eventHandlerElementName="ADMOMUserRoleOrganization_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="OMUserRoleOrganization_onInserted" />
+    <DataEventHandler tableName="OMUserRoleOrganization" dataEventType="Deleting" eventHandlerElementName="ADMOMUserRoleOrganization_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="OMUserRoleOrganization_onDeleting" />
+  </DataEventHandlers>
+  <FormEventHandlers />
+  <FormControlEventHandlers />
+  <FormDataSourceEventHandler />
+  <FormDataFieldEventHandler />
+</EventHandlers>

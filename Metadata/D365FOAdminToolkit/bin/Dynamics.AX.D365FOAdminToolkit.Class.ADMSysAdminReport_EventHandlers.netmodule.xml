@@ -1,0 +1,11 @@
+<EventHandlers>
+  <BusinessEventHandlers />
+  <DataEventHandlers />
+  <FormEventHandlers />
+  <FormControlEventHandlers>
+    <FormControlEventHandler formName="ADMSysAdminReport" formControlName="StartDateControl" formControlEventType="Modified" eventHandlerElementName="ADMSysAdminReport_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="StartDateControl_OnModified" />
+    <FormControlEventHandler formName="ADMSysAdminReport" formControlName="EndDateControl" formControlEventType="Modified" eventHandlerElementName="ADMSysAdminReport_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="EndDateControl_OnModified" />
+  </FormControlEventHandlers>
+  <FormDataSourceEventHandler />
+  <FormDataFieldEventHandler />
+</EventHandlers>

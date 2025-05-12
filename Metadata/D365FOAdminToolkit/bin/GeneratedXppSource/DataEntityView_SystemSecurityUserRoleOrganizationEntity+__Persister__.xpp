@@ -1,0 +1,886 @@
+Private class __Persister__
+extends SysDataEntityPersister
+{
+    // Data source ID macros
+    #define.OMUserRoleOrganization_ID(1)
+    #define.SecurityRole_ID(2)
+    #define.OMInternalOrganization_ID(3)
+    #define.OMHierarchyType_ID(4)
+    
+    // Data source buffers
+    OMUserRoleOrganization m_OMUserRoleOrganization;
+    SecurityRole m_SecurityRole;
+    OMInternalOrganization m_OMInternalOrganization;
+    OMHierarchyType m_OMHierarchyType;
+    
+    protected void mapEntityToDataSources(DataEntityRuntimeContext _entityCtx)
+    {
+        this.validateFieldFailed = false;
+        this.mapEntityToDataSource(_entityCtx, _entityCtx.getRuntimeContextByName('OMUserRoleOrganization'));
+        this.mapEntityToDataSource(_entityCtx, _entityCtx.getRuntimeContextByName('SecurityRole'));
+        this.mapEntityToDataSource(_entityCtx, _entityCtx.getRuntimeContextByName('OMInternalOrganization'));
+        this.mapEntityToDataSource(_entityCtx, _entityCtx.getRuntimeContextByName('OMHierarchyType'));
+        this.mapEntityToDataSourcesExtensions(_entityCtx);
+        if(this.validateFieldFailed)
+        {
+            throw Exception::ViewDataSourceValidation;
+        }
+    }
+    private boolean isAnyFieldSet_DS2(SecurityRole _securityRole, DataEntityDataSourceRuntimeContext _dataSourceCtx, DataEntityRuntimeContext _entityCtx)
+    {
+        boolean rtrn = false;
+        if(_securityRole.isFieldSet(fieldnum(SecurityRole,AotName)))
+        {
+            return true;
+        }
+        rtrn = this.isAnyFieldSet_Extensions(_entityCtx, _dataSourceCtx, _securityRole) ? true : false;
+        return rtrn;
+    }
+    private boolean isAnyFieldSet_DS3(OMInternalOrganization _oMInternalOrganization, DataEntityDataSourceRuntimeContext _dataSourceCtx, DataEntityRuntimeContext _entityCtx)
+    {
+        boolean rtrn = false;
+        if(_oMInternalOrganization.isFieldSet(fieldnum(OMInternalOrganization,OrganizationType)))
+        {
+            return true;
+        }
+        if(_oMInternalOrganization IS CompanyInfo)
+        {
+            CompanyInfo _oMInternalOrganization_CompanyInfo = _oMInternalOrganization AS CompanyInfo;
+        }
+        if(_oMInternalOrganization IS OMTeam)
+        {
+            OMTeam _oMInternalOrganization_OMTeam = _oMInternalOrganization AS OMTeam;
+        }
+        if(_oMInternalOrganization IS OMOperatingUnit)
+        {
+            OMOperatingUnit _oMInternalOrganization_OMOperatingUnit = _oMInternalOrganization AS OMOperatingUnit;
+            if(_oMInternalOrganization_OMOperatingUnit.isFieldSet(fieldnum(OMOperatingUnit,OMOperatingUnitType)))
+            {
+                return true;
+            }
+        }
+        rtrn = this.isAnyFieldSet_Extensions(_entityCtx, _dataSourceCtx, _oMInternalOrganization) ? true : false;
+        return rtrn;
+    }
+    private boolean isAnyFieldSet_DS4(OMHierarchyType _oMHierarchyType, DataEntityDataSourceRuntimeContext _dataSourceCtx, DataEntityRuntimeContext _entityCtx)
+    {
+        boolean rtrn = false;
+        if(_oMHierarchyType.isFieldSet(fieldnum(OMHierarchyType,Name)))
+        {
+            return true;
+        }
+        rtrn = this.isAnyFieldSet_Extensions(_entityCtx, _dataSourceCtx, _oMHierarchyType) ? true : false;
+        return rtrn;
+    }
+    private void foreignKeyPropagation_DS1(DataEntityRuntimeContext _entityCtx, OMUserRoleOrganization _oMUserRoleOrganization)
+    {
+        SecurityRole securityRole_ = _entityCtx.getRuntimeContextByName('SecurityRole').getBuffer();
+        // do not set foreign key values if they are same to make sure validation is not fired unless value changed
+        if(_oMUserRoleOrganization.SecurityRole != securityRole_.RecId)
+        {
+            _oMUserRoleOrganization.SecurityRole = securityRole_.RecId;
+        }
+        
+        OMInternalOrganization oMInternalOrganization_ = _entityCtx.getRuntimeContextByName('OMInternalOrganization').getBuffer();
+        // do not set foreign key values if they are same to make sure validation is not fired unless value changed
+        if(_oMUserRoleOrganization.OMInternalOrganization != oMInternalOrganization_.RecId)
+        {
+            _oMUserRoleOrganization.OMInternalOrganization = oMInternalOrganization_.RecId;
+        }
+        
+        OMHierarchyType oMHierarchyType_ = _entityCtx.getRuntimeContextByName('OMHierarchyType').getBuffer();
+        // FK propagation of references to an optional read-only PK data source will be done if
+        //   1. conflict detection has been invoked against the PK data source, or
+        //   2. the PK data source buffer is not null.
+        if(_entityCtx.getRuntimeContextByName('OMHierarchyType').conflictDetectionInvoked() || oMHierarchyType_)
+        {
+            // do not set foreign key values if they are same to make sure validation is not fired unless value changed
+            if(_oMUserRoleOrganization.OMHierarchyType != oMHierarchyType_.RecId)
+            {
+                _oMUserRoleOrganization.OMHierarchyType = oMHierarchyType_.RecId;
+            }
+        }
+        
+        // foreign key value validation
+        boolean validationFailed = false;
+        DataEntityDatabaseOperation dataSourceDBOperation = _entityCtx.getRuntimeContextByName('OMUserRoleOrganization').getDatabaseOperation();
+        SystemSecurityUserRoleOrganizationEntity dataEntityRecord = _entityCtx.getEntityRecord();
+        
+        if(!dataEntityRecord.skipDataSourceValidateField(fieldnum(SystemSecurityUserRoleOrganizationEntity, SecurityRoleReference)))
+        {
+            if(!this.validateDataSourceFieldInCompanyContext(_entityCtx.getRuntimeContextByName('OMUserRoleOrganization'), _entityCtx.getRuntimeContextByName('SecurityRole'), dataSourceDBOperation, 'OMUserRoleOrganization.SecurityRole', _oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, SecurityRole), false/*disallowEditOnCreate*/, false/*disallowEdit*/, false/*callValidateField*/, 1))
+            {
+                validationFailed = true;
+            }
+        }
+        
+        if(!dataEntityRecord.skipDataSourceValidateField(fieldnum(SystemSecurityUserRoleOrganizationEntity, InternalOrganizationReference)))
+        {
+            if(!this.validateDataSourceFieldInCompanyContext(_entityCtx.getRuntimeContextByName('OMUserRoleOrganization'), _entityCtx.getRuntimeContextByName('OMInternalOrganization'), dataSourceDBOperation, 'OMUserRoleOrganization.OMInternalOrganization', _oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, OMInternalOrganization), false/*disallowEditOnCreate*/, false/*disallowEdit*/, false/*callValidateField*/, 1))
+            {
+                validationFailed = true;
+            }
+        }
+        
+        if(!dataEntityRecord.skipDataSourceValidateField(fieldnum(SystemSecurityUserRoleOrganizationEntity, HierarchyTypeReference)))
+        {
+            if(!this.validateDataSourceFieldInCompanyContext(_entityCtx.getRuntimeContextByName('OMUserRoleOrganization'), _entityCtx.getRuntimeContextByName('OMHierarchyType'), dataSourceDBOperation, 'OMUserRoleOrganization.OMHierarchyType', _oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, OMHierarchyType), false/*disallowEditOnCreate*/, false/*disallowEdit*/, false/*callValidateField*/, 1))
+            {
+                validationFailed = true;
+            }
+        }
+        
+        if(validationFailed)
+        {
+            throw Exception::ViewDataSourceValidation;
+        }
+    }
+    protected boolean saveDataSources(DataEntityRuntimeContext _entityCtx)
+    {
+        boolean rtrn = true;
+        DataEntityDataSourceRuntimeContext _dataSourceCtx = null;
+        // save data sources in topological order.
+        {
+            // save/update data sources referenced by [OMUserRoleOrganization].
+            {
+                // handle datasources which are part of extensions and need to be saved before [SecurityRole]
+                if(!this.preSaveDataSource(_entityCtx, 'SecurityRole'))
+                {
+                    return false;
+                }
+                _dataSourceCtx = _entityCtx.getRuntimeContextByName('SecurityRole');
+                // propagates foreign key values from referenced data sources which are part of extensions.
+                this.foreignKeyPropagationExtensions(_entityCtx, _dataSourceCtx);
+                if(this.isAnyFieldSet_DS2(_dataSourceCtx.getBuffer(),_dataSourceCtx,_entityCtx))
+                {
+                    // invoke conflict detection for read-only data source.
+                    SecurityRole resolvedRecord = this.detectConflictForDataSource(_entityCtx, _dataSourceCtx);
+                    if(!resolvedRecord)
+                    {
+                        SecurityRole securityRole_ = _dataSourceCtx.getBuffer();
+                        if((securityRole_.AotName))
+                        {
+                            container dataSourceKeys = ["AotName"];
+                            container resolvedRecordValues = [resolvedRecord.AotName];
+                            container dataSourceConflictingValues = [securityRole_.AotName];
+                            str errorMessage = "";
+                            for(int i = 1; i <= conLen(dataSourceKeys); i++)
+                            {
+                                if(conPeek(dataSourceConflictingValues, i))
+                                {
+                                    errorMessage += strfmt("'%1': %2, ", conPeek(dataSourceKeys, i), conPeek(resolvedRecordValues, i));
+                                }
+                            }
+                            errorMessage = strDel(errorMessage, strLen(errorMessage) - 1, 2);
+                            checkFailed(strfmt("@ApplicationPlatform:DataEntityReadonlyDataSourceNotFoundWithKey", _dataSourceCtx.name(), errorMessage));
+                            throw Exception::ViewDataSourceValidation;
+                        }
+                    }
+                    // marks the read-only data source as 'saved' and skips actual insert/update operation.
+                    _dataSourceCtx.setDataSaved(true);
+                }
+                // in case of update marks the read-only data source as 'saved' and skips actual insert/update operation.
+                else if(_dataSourceCtx.getDatabaseOperation() == DataEntityDatabaseOperation::Update)
+                {
+                    _dataSourceCtx.setDataSaved(true);
+                }
+                _dataSourceCtx.setDatabaseOperation(DataEntityDatabaseOperation::None);
+                // inserts/updates data source [SecurityRole].
+                if(!this.saveDataSource(_entityCtx, _dataSourceCtx))
+                {
+                    // returns from here if an inner joined data source fails to be saved.
+                    return false;
+                }
+                this.postSaveDataSource();
+            }
+            {
+                // handle datasources which are part of extensions and need to be saved before [OMInternalOrganization]
+                if(!this.preSaveDataSource(_entityCtx, 'OMInternalOrganization'))
+                {
+                    return false;
+                }
+                _dataSourceCtx = _entityCtx.getRuntimeContextByName('OMInternalOrganization');
+                // propagates foreign key values from referenced data sources which are part of extensions.
+                this.foreignKeyPropagationExtensions(_entityCtx, _dataSourceCtx);
+                if(this.isAnyFieldSet_DS3(_dataSourceCtx.getBuffer(),_dataSourceCtx,_entityCtx))
+                {
+                    // invoke conflict detection for read-only data source.
+                    OMInternalOrganization resolvedRecord = this.detectConflictForDataSource(_entityCtx, _dataSourceCtx);
+                    if(!resolvedRecord)
+                    {
+                        OMInternalOrganization oMInternalOrganization_ = _dataSourceCtx.getBuffer();
+                        if((oMInternalOrganization_.PartyNumber))
+                        {
+                            container dataSourceKeys = ["PartyNumber"];
+                            container resolvedRecordValues = [resolvedRecord.PartyNumber];
+                            container dataSourceConflictingValues = [oMInternalOrganization_.PartyNumber];
+                            str errorMessage = "";
+                            for(int i = 1; i <= conLen(dataSourceKeys); i++)
+                            {
+                                if(conPeek(dataSourceConflictingValues, i))
+                                {
+                                    errorMessage += strfmt("'%1': %2, ", conPeek(dataSourceKeys, i), conPeek(resolvedRecordValues, i));
+                                }
+                            }
+                            errorMessage = strDel(errorMessage, strLen(errorMessage) - 1, 2);
+                            checkFailed(strfmt("@ApplicationPlatform:DataEntityReadonlyDataSourceNotFoundWithKey", _dataSourceCtx.name(), errorMessage));
+                            throw Exception::ViewDataSourceValidation;
+                        }
+                    }
+                    // marks the read-only data source as 'saved' and skips actual insert/update operation.
+                    _dataSourceCtx.setDataSaved(true);
+                }
+                // in case of update marks the read-only data source as 'saved' and skips actual insert/update operation.
+                else if(_dataSourceCtx.getDatabaseOperation() == DataEntityDatabaseOperation::Update)
+                {
+                    _dataSourceCtx.setDataSaved(true);
+                }
+                _dataSourceCtx.setDatabaseOperation(DataEntityDatabaseOperation::None);
+                // inserts/updates data source [OMInternalOrganization].
+                if(!this.saveDataSource(_entityCtx, _dataSourceCtx))
+                {
+                    // returns from here if an inner joined data source fails to be saved.
+                    return false;
+                }
+                this.postSaveDataSource();
+            }
+            {
+                // handle datasources which are part of extensions and need to be saved before [OMHierarchyType]
+                if(!this.preSaveDataSource(_entityCtx, 'OMHierarchyType'))
+                {
+                    return false;
+                }
+                _dataSourceCtx = _entityCtx.getRuntimeContextByName('OMHierarchyType');
+                // propagates foreign key values from referenced data sources which are part of extensions.
+                this.foreignKeyPropagationExtensions(_entityCtx, _dataSourceCtx);
+                if(this.isAnyFieldSet_DS4(_dataSourceCtx.getBuffer(),_dataSourceCtx,_entityCtx))
+                {
+                    // invoke conflict detection for read-only data source.
+                    OMHierarchyType resolvedRecord = this.detectConflictForDataSource(_entityCtx, _dataSourceCtx);
+                    if(!resolvedRecord)
+                    {
+                        OMHierarchyType oMHierarchyType_ = _dataSourceCtx.getBuffer();
+                        if((oMHierarchyType_.Name))
+                        {
+                            container dataSourceKeys = ["Name"];
+                            container resolvedRecordValues = [resolvedRecord.Name];
+                            container dataSourceConflictingValues = [oMHierarchyType_.Name];
+                            str errorMessage = "";
+                            for(int i = 1; i <= conLen(dataSourceKeys); i++)
+                            {
+                                if(conPeek(dataSourceConflictingValues, i))
+                                {
+                                    errorMessage += strfmt("'%1': %2, ", conPeek(dataSourceKeys, i), conPeek(resolvedRecordValues, i));
+                                }
+                            }
+                            errorMessage = strDel(errorMessage, strLen(errorMessage) - 1, 2);
+                            checkFailed(strfmt("@ApplicationPlatform:DataEntityReadonlyDataSourceNotFoundWithKey", _dataSourceCtx.name(), errorMessage));
+                            throw Exception::ViewDataSourceValidation;
+                        }
+                    }
+                    // marks the read-only data source as 'saved' and skips actual insert/update operation.
+                    _dataSourceCtx.setDataSaved(true);
+                }
+                // in case of update marks the read-only data source as 'saved' and skips actual insert/update operation.
+                else if(_dataSourceCtx.getDatabaseOperation() == DataEntityDatabaseOperation::Update)
+                {
+                    _dataSourceCtx.setDataSaved(true);
+                }
+                _dataSourceCtx.setDatabaseOperation(DataEntityDatabaseOperation::None);
+                // inserts/updates data source [OMHierarchyType].
+                this.saveDataSource(_entityCtx, _dataSourceCtx);
+                this.postSaveDataSource();
+            }
+            // handle datasources which are part of extensions and need to be saved before [OMUserRoleOrganization]
+            if(!this.preSaveDataSource(_entityCtx, 'OMUserRoleOrganization'))
+            {
+                return false;
+            }
+            _dataSourceCtx = _entityCtx.getRuntimeContextByName('OMUserRoleOrganization');
+            // propagates foreign key values from referenced data sources which are part of extensions.
+            this.foreignKeyPropagationExtensions(_entityCtx, _dataSourceCtx);
+            // propagates foreign key values from referenced data sources.
+            this.foreignKeyPropagation_DS1(_entityCtx, _dataSourceCtx.getBuffer());
+            // inserts/updates data source [OMUserRoleOrganization].
+            if(!this.saveDataSource(_entityCtx, _dataSourceCtx))
+            {
+                // returns from here if the root data source fails to be saved.
+                return false;
+            }
+            this.postSaveDataSource();
+        }
+        // handle datasources which are part of extensions and need to be saved in last 
+        this.preSaveDataSource(_entityCtx, '');
+        return rtrn;
+    }
+    protected boolean deleteDataSources(DataEntityRuntimeContext _entityCtx)
+    {
+        boolean rtrn = true;
+        DataEntityDataSourceRuntimeContext _dataSourceCtx = null;
+        // delete data sources in reverse topological order.
+        {
+            // handle datasources which are part of extensions and need to be saved before [OMUserRoleOrganization]
+            if(!this.preSaveDataSource(_entityCtx, 'OMUserRoleOrganization'))
+            {
+                return false;
+            }
+            _dataSourceCtx = _entityCtx.getRuntimeContextByName('OMUserRoleOrganization');
+            // deletes data source [OMUserRoleOrganization].
+            if(!this.saveDataSource(_entityCtx, _dataSourceCtx))
+            {
+                // returns from here if the root data source fails to be saved.
+                return false;
+            }
+            this.postSaveDataSource();
+            // deletes data sources referenced by [OMUserRoleOrganization].
+            {
+                // handle datasources which are part of extensions and need to be saved before [SecurityRole]
+                if(!this.preSaveDataSource(_entityCtx, 'SecurityRole'))
+                {
+                    return false;
+                }
+                _dataSourceCtx = _entityCtx.getRuntimeContextByName('SecurityRole');
+                // skips delete operation against read-only data source.
+                // marks the read-only data source as 'saved' and skips actual delete operation.
+                _dataSourceCtx.setDataSaved(true);
+                _dataSourceCtx.setDatabaseOperation(DataEntityDatabaseOperation::None);
+                // deletes data source [SecurityRole].
+                if(!this.saveDataSource(_entityCtx, _dataSourceCtx))
+                {
+                    // returns from here if an inner joined data source fails to be saved.
+                    return false;
+                }
+                this.postSaveDataSource();
+            }
+            {
+                // handle datasources which are part of extensions and need to be saved before [OMInternalOrganization]
+                if(!this.preSaveDataSource(_entityCtx, 'OMInternalOrganization'))
+                {
+                    return false;
+                }
+                _dataSourceCtx = _entityCtx.getRuntimeContextByName('OMInternalOrganization');
+                // skips delete operation against read-only data source.
+                // marks the read-only data source as 'saved' and skips actual delete operation.
+                _dataSourceCtx.setDataSaved(true);
+                _dataSourceCtx.setDatabaseOperation(DataEntityDatabaseOperation::None);
+                // deletes data source [OMInternalOrganization].
+                if(!this.saveDataSource(_entityCtx, _dataSourceCtx))
+                {
+                    // returns from here if an inner joined data source fails to be saved.
+                    return false;
+                }
+                this.postSaveDataSource();
+            }
+            {
+                // handle datasources which are part of extensions and need to be saved before [OMHierarchyType]
+                if(!this.preSaveDataSource(_entityCtx, 'OMHierarchyType'))
+                {
+                    return false;
+                }
+                _dataSourceCtx = _entityCtx.getRuntimeContextByName('OMHierarchyType');
+                // skips delete operation against read-only data source.
+                // marks the read-only data source as 'saved' and skips actual delete operation.
+                _dataSourceCtx.setDataSaved(true);
+                _dataSourceCtx.setDatabaseOperation(DataEntityDatabaseOperation::None);
+                // deletes data source [OMHierarchyType].
+                this.saveDataSource(_entityCtx, _dataSourceCtx);
+                this.postSaveDataSource();
+            }
+        }
+        // handle datasources which are part of extensions and need to be saved in last 
+        this.preSaveDataSource(_entityCtx, '');
+        return rtrn;
+    }
+    private void mapToDataSource_DS1(DataEntityRuntimeContext _entityCtx, DataEntityDataSourceRuntimeContext _dataSourceCtx, OMUserRoleOrganization _oMUserRoleOrganization, SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity)
+    {
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, UserId), _oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, User), 1);
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, HierarchyTypeReference), _oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, OMHierarchyType), 1);
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, InternalOrganizationReference), _oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, OMInternalOrganization), 1);
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, SecurityRoleReference), _oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, SecurityRole), 1);
+        
+        this.mapToDataSourceExtensions(_dataSourceCtx, _oMUserRoleOrganization, _systemSecurityUserRoleOrganizationEntity);
+        _oMUserRoleOrganization.trackFieldExternallySet(false);
+    }
+    private void mapToDataSource_DS2(DataEntityRuntimeContext _entityCtx, DataEntityDataSourceRuntimeContext _dataSourceCtx, SecurityRole _securityRole, SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity)
+    {
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, SecurityRoleIdentifier), _securityRole, fieldnum(SecurityRole, AotName), 1);
+        
+        this.mapToDataSourceExtensions(_dataSourceCtx, _securityRole, _systemSecurityUserRoleOrganizationEntity);
+        _securityRole.trackFieldExternallySet(false);
+    }
+    private void mapToDataSource_DS3(DataEntityRuntimeContext _entityCtx, DataEntityDataSourceRuntimeContext _dataSourceCtx, OMInternalOrganization _oMInternalOrganization, SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity)
+    {
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, OrganizationType), _oMInternalOrganization, fieldnum(OMInternalOrganization, OrganizationType), 1);
+        
+        this.mapToDataSourceExtensions(_dataSourceCtx, _oMInternalOrganization, _systemSecurityUserRoleOrganizationEntity);
+        _oMInternalOrganization.trackFieldExternallySet(false);
+        if(_oMInternalOrganization IS CompanyInfo)
+        {
+            CompanyInfo _oMInternalOrganization_CompanyInfo = _oMInternalOrganization AS CompanyInfo;
+            
+            this.mapToDataSourceExtensions(_dataSourceCtx, _oMInternalOrganization_CompanyInfo, _systemSecurityUserRoleOrganizationEntity);
+            _oMInternalOrganization_CompanyInfo.trackFieldExternallySet(false);
+        }
+        if(_oMInternalOrganization IS OMTeam)
+        {
+            OMTeam _oMInternalOrganization_OMTeam = _oMInternalOrganization AS OMTeam;
+            
+            this.mapToDataSourceExtensions(_dataSourceCtx, _oMInternalOrganization_OMTeam, _systemSecurityUserRoleOrganizationEntity);
+            _oMInternalOrganization_OMTeam.trackFieldExternallySet(false);
+        }
+        if(_oMInternalOrganization IS OMOperatingUnit)
+        {
+            OMOperatingUnit _oMInternalOrganization_OMOperatingUnit = _oMInternalOrganization AS OMOperatingUnit;
+            this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, OperatingUnitType), _oMInternalOrganization_OMOperatingUnit, fieldnum(OMOperatingUnit, OMOperatingUnitType), 1);
+            
+            this.mapToDataSourceExtensions(_dataSourceCtx, _oMInternalOrganization_OMOperatingUnit, _systemSecurityUserRoleOrganizationEntity);
+            _oMInternalOrganization_OMOperatingUnit.trackFieldExternallySet(false);
+        }
+    }
+    private void mapToDataSource_DS4(DataEntityRuntimeContext _entityCtx, DataEntityDataSourceRuntimeContext _dataSourceCtx, OMHierarchyType _oMHierarchyType, SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity)
+    {
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, HierarchyType), _oMHierarchyType, fieldnum(OMHierarchyType, Name), 1);
+        
+        this.mapToDataSourceExtensions(_dataSourceCtx, _oMHierarchyType, _systemSecurityUserRoleOrganizationEntity);
+        _oMHierarchyType.trackFieldExternallySet(false);
+    }
+    protected void doMapEntityToDataSource(DataEntityRuntimeContext _entityCtx, DataEntityDataSourceRuntimeContext _dataSourceCtx)
+    {
+        switch(_dataSourceCtx.id())
+        {
+            case #OMUserRoleOrganization_ID:
+                this.mapToDataSource_DS1(_entityCtx, _dataSourceCtx, _dataSourceCtx.getBuffer(), _entityCtx.getEntityRecord());
+                break;
+            case #SecurityRole_ID:
+                this.mapToDataSource_DS2(_entityCtx, _dataSourceCtx, _dataSourceCtx.getBuffer(), _entityCtx.getEntityRecord());
+                break;
+            case #OMInternalOrganization_ID:
+                this.mapToDataSource_DS3(_entityCtx, _dataSourceCtx, _dataSourceCtx.getBuffer(), _entityCtx.getEntityRecord());
+                break;
+            case #OMHierarchyType_ID:
+                this.mapToDataSource_DS4(_entityCtx, _dataSourceCtx, _dataSourceCtx.getBuffer(), _entityCtx.getEntityRecord());
+                break;
+            default :
+                this.doMapEntityToDataSourceExtensions(_entityCtx, _dataSourceCtx);
+                break;
+        }
+    }
+    private void mapFromDataSource_DS1(DataEntityDataSourceRuntimeContext _dataSourceCtx, OMUserRoleOrganization _oMUserRoleOrganization, SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity)
+    {
+        this.mapDataSourceFieldToEntityField(_oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, User), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, UserId), false);
+        this.mapDataSourceFieldToEntityField(_oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, OMHierarchyType), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, HierarchyTypeReference), false);
+        this.mapDataSourceFieldToEntityField(_oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, OMInternalOrganization), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, InternalOrganizationReference), false);
+        this.mapDataSourceFieldToEntityField(_oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, SecurityRole), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, SecurityRoleReference), false);
+        this.mapFromDataSourceExtensions(_dataSourceCtx, _oMUserRoleOrganization, _systemSecurityUserRoleOrganizationEntity);
+        // map system fields (e.g. recid and recversion) from data source buffer to view record.
+        _systemSecurityUserRoleOrganizationEntity.fromViewDataSource(_dataSourceCtx.id(), _oMUserRoleOrganization);
+    }
+    private void mapFromDataSource_DS2(DataEntityDataSourceRuntimeContext _dataSourceCtx, SecurityRole _securityRole, SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity)
+    {
+        this.mapDataSourceFieldToEntityField(_securityRole, fieldnum(SecurityRole, AotName), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, SecurityRoleIdentifier), false);
+        this.mapFromDataSourceExtensions(_dataSourceCtx, _securityRole, _systemSecurityUserRoleOrganizationEntity);
+        // map system fields (e.g. recid and recversion) from data source buffer to view record.
+        _systemSecurityUserRoleOrganizationEntity.fromViewDataSource(_dataSourceCtx.id(), _securityRole);
+    }
+    private void mapFromDataSource_DS3(DataEntityDataSourceRuntimeContext _dataSourceCtx, OMInternalOrganization _oMInternalOrganization, SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity)
+    {
+        this.mapDataSourceFieldToEntityField(_oMInternalOrganization, fieldnum(OMInternalOrganization, OrganizationType), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, OrganizationType), false);
+        this.mapFromDataSourceExtensions(_dataSourceCtx, _oMInternalOrganization, _systemSecurityUserRoleOrganizationEntity);
+        if(_oMInternalOrganization IS CompanyInfo)
+        {
+            CompanyInfo _oMInternalOrganization_CompanyInfo = _oMInternalOrganization AS CompanyInfo;
+            this.mapFromDataSourceExtensions(_dataSourceCtx, _oMInternalOrganization_CompanyInfo, _systemSecurityUserRoleOrganizationEntity);
+        }
+        if(_oMInternalOrganization IS OMTeam)
+        {
+            OMTeam _oMInternalOrganization_OMTeam = _oMInternalOrganization AS OMTeam;
+            this.mapFromDataSourceExtensions(_dataSourceCtx, _oMInternalOrganization_OMTeam, _systemSecurityUserRoleOrganizationEntity);
+        }
+        if(_oMInternalOrganization IS OMOperatingUnit)
+        {
+            OMOperatingUnit _oMInternalOrganization_OMOperatingUnit = _oMInternalOrganization AS OMOperatingUnit;
+            this.mapDataSourceFieldToEntityField(_oMInternalOrganization_OMOperatingUnit, fieldnum(OMOperatingUnit, OMOperatingUnitType), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, OperatingUnitType), false);
+            this.mapFromDataSourceExtensions(_dataSourceCtx, _oMInternalOrganization_OMOperatingUnit, _systemSecurityUserRoleOrganizationEntity);
+        }
+        // map system fields (e.g. recid and recversion) from data source buffer to view record.
+        _systemSecurityUserRoleOrganizationEntity.fromViewDataSource(_dataSourceCtx.id(), _oMInternalOrganization);
+    }
+    private void mapFromDataSource_DS4(DataEntityDataSourceRuntimeContext _dataSourceCtx, OMHierarchyType _oMHierarchyType, SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity)
+    {
+        this.mapDataSourceFieldToEntityField(_oMHierarchyType, fieldnum(OMHierarchyType, Name), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, HierarchyType), false);
+        this.mapFromDataSourceExtensions(_dataSourceCtx, _oMHierarchyType, _systemSecurityUserRoleOrganizationEntity);
+        // map system fields (e.g. recid and recversion) from data source buffer to view record.
+        _systemSecurityUserRoleOrganizationEntity.fromViewDataSource(_dataSourceCtx.id(), _oMHierarchyType);
+    }
+    protected void doMapDataSourceToEntity(DataEntityRuntimeContext _entityCtx, DataEntityDataSourceRuntimeContext _dataSourceCtx)
+    {
+        switch(_dataSourceCtx.id())
+        {
+            case #OMUserRoleOrganization_ID:
+                this.mapFromDataSource_DS1(_dataSourceCtx, _dataSourceCtx.getBuffer(), _entityCtx.getEntityRecord());
+                break;
+            case #SecurityRole_ID:
+                this.mapFromDataSource_DS2(_dataSourceCtx, _dataSourceCtx.getBuffer(), _entityCtx.getEntityRecord());
+                break;
+            case #OMInternalOrganization_ID:
+                this.mapFromDataSource_DS3(_dataSourceCtx, _dataSourceCtx.getBuffer(), _entityCtx.getEntityRecord());
+                break;
+            case #OMHierarchyType_ID:
+                this.mapFromDataSource_DS4(_dataSourceCtx, _dataSourceCtx.getBuffer(), _entityCtx.getEntityRecord());
+                break;
+            default :
+                this.doMapDataSourceToEntityExtensions(_entityCtx, _dataSourceCtx);
+                break;
+        }
+    }
+    protected Common doFindDataSource(DataEntityRuntimeContext _entityCtx, DataEntityDataSourceRuntimeContext _dataSourceCtx)
+    {
+        Common rtrn = null;
+        switch(_dataSourceCtx.id())
+        {
+            case #OMUserRoleOrganization_ID:
+                rtrn = this.LookForUniqueKeyMatch_DS1(_entityCtx.getEntityRecord(), _dataSourceCtx.getBuffer());
+                break;
+            case #SecurityRole_ID:
+                rtrn = this.LookForUniqueKeyMatch_DS2(_entityCtx.getEntityRecord(), _dataSourceCtx.getBuffer());
+                break;
+            case #OMInternalOrganization_ID:
+                rtrn = this.LookForUniqueKeyMatch_DS3(_entityCtx.getEntityRecord(), _dataSourceCtx.getBuffer());
+                break;
+            case #OMHierarchyType_ID:
+                rtrn = this.LookForUniqueKeyMatch_DS4(_entityCtx.getEntityRecord(), _dataSourceCtx.getBuffer());
+                break;
+            default :
+                rtrn = this.doFindDataSourceExtensions(_entityCtx, _dataSourceCtx);
+                break;
+        }
+        return rtrn;
+    }
+    protected boolean isAnyMappedDataSourceFieldSet_DS1(SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity, str disabledConfigKey = null)
+    {
+        boolean rtrn = false;
+        if(_systemSecurityUserRoleOrganizationEntity.isFieldSet(fieldnum(SystemSecurityUserRoleOrganizationEntity, UserId)))
+        {
+            return true;
+        }
+        if(_systemSecurityUserRoleOrganizationEntity.isFieldSet(fieldnum(SystemSecurityUserRoleOrganizationEntity, HierarchyTypeReference)))
+        {
+            return true;
+        }
+        if(_systemSecurityUserRoleOrganizationEntity.isFieldSet(fieldnum(SystemSecurityUserRoleOrganizationEntity, InternalOrganizationReference)))
+        {
+            return true;
+        }
+        if(_systemSecurityUserRoleOrganizationEntity.isFieldSet(fieldnum(SystemSecurityUserRoleOrganizationEntity, SecurityRoleReference)))
+        {
+            return true;
+        }
+        rtrn = this.isAnyMappedDataSourceExtensionFieldSet(_systemSecurityUserRoleOrganizationEntity, 'OMUserRoleOrganization', disabledConfigKey);
+        return rtrn;
+    }
+    protected boolean isAnyMappedDataSourceFieldSet_DS2(SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity, str disabledConfigKey = null)
+    {
+        boolean rtrn = false;
+        if(_systemSecurityUserRoleOrganizationEntity.isFieldSet(fieldnum(SystemSecurityUserRoleOrganizationEntity, SecurityRoleIdentifier)))
+        {
+            return true;
+        }
+        rtrn = this.isAnyMappedDataSourceExtensionFieldSet(_systemSecurityUserRoleOrganizationEntity, 'SecurityRole', disabledConfigKey);
+        return rtrn;
+    }
+    protected boolean isAnyMappedDataSourceFieldSet_DS3(SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity, str disabledConfigKey = null)
+    {
+        boolean rtrn = false;
+        if(_systemSecurityUserRoleOrganizationEntity.isFieldSet(fieldnum(SystemSecurityUserRoleOrganizationEntity, OrganizationType)))
+        {
+            return true;
+        }
+        if(_systemSecurityUserRoleOrganizationEntity.isFieldSet(fieldnum(SystemSecurityUserRoleOrganizationEntity, OperatingUnitType)))
+        {
+            return true;
+        }
+        rtrn = this.isAnyMappedDataSourceExtensionFieldSet(_systemSecurityUserRoleOrganizationEntity, 'OMInternalOrganization', disabledConfigKey);
+        return rtrn;
+    }
+    protected boolean isAnyMappedDataSourceFieldSet_DS4(SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity, str disabledConfigKey = null)
+    {
+        boolean rtrn = false;
+        if(_systemSecurityUserRoleOrganizationEntity.isFieldSet(fieldnum(SystemSecurityUserRoleOrganizationEntity, HierarchyType)))
+        {
+            return true;
+        }
+        rtrn = this.isAnyMappedDataSourceExtensionFieldSet(_systemSecurityUserRoleOrganizationEntity, 'OMHierarchyType', disabledConfigKey);
+        return rtrn;
+    }
+    protected boolean isAnyMappedDataSourceFieldSet(DataEntityRuntimeContext _entityCtx, DataEntityDataSourceRuntimeContext _dataSourceCtx)
+    {
+        boolean rtrn = false;
+        switch(_dataSourceCtx.id())
+        {
+            case #OMUserRoleOrganization_ID:
+                rtrn = this.isAnyMappedDataSourceFieldSet_DS1(_entityCtx.getEntityRecord());
+                break;
+            case #SecurityRole_ID:
+                rtrn = this.isAnyMappedDataSourceFieldSet_DS2(_entityCtx.getEntityRecord());
+                break;
+            case #OMInternalOrganization_ID:
+                rtrn = this.isAnyMappedDataSourceFieldSet_DS3(_entityCtx.getEntityRecord());
+                break;
+            case #OMHierarchyType_ID:
+                rtrn = this.isAnyMappedDataSourceFieldSet_DS4(_entityCtx.getEntityRecord());
+                break;
+            default :
+                rtrn = this.isAnyMappedDataSourceFieldSet_DSExtensions(_entityCtx, _dataSourceCtx);
+                break;
+        }
+        return rtrn;
+    }
+    private boolean validateDataSource_DS1(DataEntityRuntimeContext _entityCtx, SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity, DataEntityDataSourceRuntimeContext _dataSourceCtx, OMUserRoleOrganization _oMUserRoleOrganization)
+    {
+        boolean rtrn = true;
+        rtrn = this.validateMappedDataSourceField(_entityCtx, _dataSourceCtx, _dataSourceCtx.getCompany(), '', conNull(), _systemSecurityUserRoleOrganizationEntity, fieldnum(SystemSecurityUserRoleOrganizationEntity, UserId), 'SystemSecurityUserRoleOrganizationEntity.UserId', _oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, User), false/*disallowEditOnCreate*/, false/*disallowEdit*/, true/*callValidateField*/, 1) ? rtrn : false;
+        rtrn = this.validateDataSourceExtensions(_entityCtx, _systemSecurityUserRoleOrganizationEntity, _dataSourceCtx, _oMUserRoleOrganization) ? rtrn : false;
+        return rtrn;
+    }
+    protected boolean validateDataSource(DataEntityRuntimeContext _entityCtx, DataEntityDataSourceRuntimeContext _dataSourceCtx)
+    {
+        boolean rtrn = true;
+        switch(_dataSourceCtx.id())
+        {
+            case #OMUserRoleOrganization_ID:
+                rtrn = this.validateDataSource_DS1(_entityCtx,_entityCtx.getEntityRecord(),_dataSourceCtx,_dataSourceCtx.getBuffer());
+                break;
+            default :
+                rtrn = this.validateDataSourceExtensions_DSExtensions(_entityCtx, _dataSourceCtx);
+                break;
+        }
+        return rtrn;
+    }
+    private void mapToMatchingRecord_DS1(DataEntityDataSourceRuntimeContext _dataSourceCtx, OMUserRoleOrganization _oMUserRoleOrganization, OMUserRoleOrganization _matchingRecord)
+    {
+        // map data changes in bound fields.
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, User), _matchingRecord, fieldnum(OMUserRoleOrganization, User), 1);
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, OMHierarchyType), _matchingRecord, fieldnum(OMUserRoleOrganization, OMHierarchyType), 1);
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, OMInternalOrganization), _matchingRecord, fieldnum(OMUserRoleOrganization, OMInternalOrganization), 1);
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _oMUserRoleOrganization, fieldnum(OMUserRoleOrganization, SecurityRole), _matchingRecord, fieldnum(OMUserRoleOrganization, SecurityRole), 1);
+        this.mapToMatchingRecordExtensions(_dataSourceCtx, tablestr(SystemSecurityUserRoleOrganizationEntity), _oMUserRoleOrganization, _matchingRecord);
+    }
+    private void mapToMatchingRecord_DS2(DataEntityDataSourceRuntimeContext _dataSourceCtx, SecurityRole _securityRole, SecurityRole _matchingRecord)
+    {
+        // map data changes in bound fields.
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _securityRole, fieldnum(SecurityRole, AotName), _matchingRecord, fieldnum(SecurityRole, AotName), 1);
+        this.mapToMatchingRecordExtensions(_dataSourceCtx, tablestr(SystemSecurityUserRoleOrganizationEntity), _securityRole, _matchingRecord);
+    }
+    private void mapToMatchingRecord_DS3(DataEntityDataSourceRuntimeContext _dataSourceCtx, OMInternalOrganization _oMInternalOrganization, OMInternalOrganization _matchingRecord)
+    {
+        // map data changes in bound fields.
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _oMInternalOrganization, fieldnum(OMInternalOrganization, OrganizationType), _matchingRecord, fieldnum(OMInternalOrganization, OrganizationType), 1);
+        this.mapToMatchingRecordExtensions(_dataSourceCtx, tablestr(SystemSecurityUserRoleOrganizationEntity), _oMInternalOrganization, _matchingRecord);
+        if(_oMInternalOrganization IS CompanyInfo)
+        {
+            CompanyInfo _oMInternalOrganization_CompanyInfo = _oMInternalOrganization AS CompanyInfo;
+            CompanyInfo _matchingRecord_companyInfo = _matchingRecord AS CompanyInfo;
+            // map data changes in bound fields.
+            this.mapToMatchingRecordExtensions(_dataSourceCtx, tablestr(SystemSecurityUserRoleOrganizationEntity), _oMInternalOrganization_CompanyInfo, _matchingRecord_companyInfo);
+        }
+        if(_oMInternalOrganization IS OMTeam)
+        {
+            OMTeam _oMInternalOrganization_OMTeam = _oMInternalOrganization AS OMTeam;
+            OMTeam _matchingRecord_oMTeam = _matchingRecord AS OMTeam;
+            // map data changes in bound fields.
+            this.mapToMatchingRecordExtensions(_dataSourceCtx, tablestr(SystemSecurityUserRoleOrganizationEntity), _oMInternalOrganization_OMTeam, _matchingRecord_oMTeam);
+        }
+        if(_oMInternalOrganization IS OMOperatingUnit)
+        {
+            OMOperatingUnit _oMInternalOrganization_OMOperatingUnit = _oMInternalOrganization AS OMOperatingUnit;
+            OMOperatingUnit _matchingRecord_oMOperatingUnit = _matchingRecord AS OMOperatingUnit;
+            // map data changes in bound fields.
+            this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _oMInternalOrganization_OMOperatingUnit, fieldnum(OMOperatingUnit, OMOperatingUnitType), _matchingRecord_oMOperatingUnit, fieldnum(OMOperatingUnit, OMOperatingUnitType), 1);
+            this.mapToMatchingRecordExtensions(_dataSourceCtx, tablestr(SystemSecurityUserRoleOrganizationEntity), _oMInternalOrganization_OMOperatingUnit, _matchingRecord_oMOperatingUnit);
+        }
+    }
+    private void mapToMatchingRecord_DS4(DataEntityDataSourceRuntimeContext _dataSourceCtx, OMHierarchyType _oMHierarchyType, OMHierarchyType _matchingRecord)
+    {
+        // map data changes in bound fields.
+        this.mapEntityFieldToDataSourceField(_dataSourceCtx.getDatabaseOperation(), _oMHierarchyType, fieldnum(OMHierarchyType, Name), _matchingRecord, fieldnum(OMHierarchyType, Name), 1);
+        this.mapToMatchingRecordExtensions(_dataSourceCtx, tablestr(SystemSecurityUserRoleOrganizationEntity), _oMHierarchyType, _matchingRecord);
+    }
+    protected void mapDataSourceToMatchingRecord(DataEntityDataSourceRuntimeContext _dataSourceCtx, Common _matchingRecord)
+    {
+        switch(_dataSourceCtx.id())
+        {
+            case #OMUserRoleOrganization_ID:
+                this.mapToMatchingRecord_DS1(_dataSourceCtx, _dataSourceCtx.getBuffer(), _matchingRecord);
+                break;
+            case #SecurityRole_ID:
+                this.mapToMatchingRecord_DS2(_dataSourceCtx, _dataSourceCtx.getBuffer(), _matchingRecord);
+                break;
+            case #OMInternalOrganization_ID:
+                this.mapToMatchingRecord_DS3(_dataSourceCtx, _dataSourceCtx.getBuffer(), _matchingRecord);
+                break;
+            case #OMHierarchyType_ID:
+                this.mapToMatchingRecord_DS4(_dataSourceCtx, _dataSourceCtx.getBuffer(), _matchingRecord);
+                break;
+            default :
+                this.mapDataSourceToMatchingRecordExtensions(_dataSourceCtx, _matchingRecord);
+                break;
+        }
+    }
+    protected void validateConfigurationKeys(DataEntityRuntimeContext _entityCtx)
+    {
+    }
+    protected boolean hasDataSourceRecordChanged(int _dataSourceId, common _originalRecord, common _updatedRecord)
+    {
+        boolean hasDataSourceRecordChanged_ = true;
+        
+        // The method is called for OCC validation and only upon data sources that have One-to-Many relationships.
+        
+        switch (_dataSourceId)
+        {
+            case #SecurityRole_ID:
+                hasDataSourceRecordChanged_ = this.hasDataSourceRecordChanged_DS2(_originalRecord, _updatedRecord);
+                break;
+            case #OMInternalOrganization_ID:
+                hasDataSourceRecordChanged_ = this.hasDataSourceRecordChanged_DS3(_originalRecord, _updatedRecord);
+                break;
+            case #OMHierarchyType_ID:
+                hasDataSourceRecordChanged_ = this.hasDataSourceRecordChanged_DS4(_originalRecord, _updatedRecord);
+                break;
+        }
+        return hasDataSourceRecordChanged_;
+    }
+    protected void initializeDataSources(DataEntityRuntimeContext _entityCtx)
+    {
+        this.initializeDataSource(_entityCtx, 'OMUserRoleOrganization', m_OMUserRoleOrganization, this.getDataSourceId('OMUserRoleOrganization'), this.getDataSourceRuntimeId('OMUserRoleOrganization'), false/* optional */, false/* readonly */, false/* oneToMany */, false/* dateEffective */, false/* applyDateFilter */);
+        this.initializeDataSource(_entityCtx, 'SecurityRole', m_SecurityRole, this.getDataSourceId('SecurityRole'), this.getDataSourceRuntimeId('SecurityRole'), false/* optional */, true/* readonly */, true/* oneToMany */, false/* dateEffective */, false/* applyDateFilter */);
+        this.initializeDataSource(_entityCtx, 'OMInternalOrganization', m_OMInternalOrganization, this.getDataSourceId('OMInternalOrganization'), this.getDataSourceRuntimeId('OMInternalOrganization'), false/* optional */, true/* readonly */, true/* oneToMany */, false/* dateEffective */, false/* applyDateFilter */);
+        this.initializeDataSource(_entityCtx, 'OMHierarchyType', m_OMHierarchyType, this.getDataSourceId('OMHierarchyType'), this.getDataSourceRuntimeId('OMHierarchyType'), true/* optional */, true/* readonly */, true/* oneToMany */, false/* dateEffective */, false/* applyDateFilter */);
+        this.initializeDataSourcesExtensions(_entityCtx);
+    }
+    private boolean hasDataSourceRecordChanged_DS2(SecurityRole _originalRecord, SecurityRole _updatedRecord)
+    {
+        if (_originalRecord.AotName != _updatedRecord.AotName)
+        {
+            return true;
+        }
+        return false;
+    }
+    private boolean hasDataSourceRecordChanged_DS3(OMInternalOrganization _originalRecord, OMInternalOrganization _updatedRecord)
+    {
+        if (_originalRecord.OrganizationType != _updatedRecord.OrganizationType)
+        {
+            return true;
+        }
+        if (_originalRecord is OMOperatingUnit)
+        {
+            OMOperatingUnit original_oMOperatingUnit_ = _originalRecord as OMOperatingUnit;
+            OMOperatingUnit updated_oMOperatingUnit_ = _updatedRecord as OMOperatingUnit;
+            if (original_oMOperatingUnit_.OMOperatingUnitType != updated_oMOperatingUnit_.OMOperatingUnitType)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean hasDataSourceRecordChanged_DS4(OMHierarchyType _originalRecord, OMHierarchyType _updatedRecord)
+    {
+        if (_originalRecord.Name != _updatedRecord.Name)
+        {
+            return true;
+        }
+        return false;
+    }
+    private OMUserRoleOrganization LookForUniqueKeyMatch_DS1(SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity, OMUserRoleOrganization _oMUserRoleOrganization)
+    {
+        OMUserRoleOrganization oMUserRoleOrganization_ = null;
+        
+        select
+            forUpdate
+            firstOnly
+                oMUserRoleOrganization_
+        where
+            oMUserRoleOrganization_.RecId == _oMUserRoleOrganization.RecId
+        ;
+        
+        if (oMUserRoleOrganization_)
+        {
+            return oMUserRoleOrganization_;
+        }
+        
+        return oMUserRoleOrganization_;
+    }
+    private SecurityRole LookForUniqueKeyMatch_DS2(SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity, SecurityRole _securityRole)
+    {
+        SecurityRole securityRole_ = null;
+        
+        // Ensuring only fields in the selection list should be accessed for read-only data source.
+        securityRole_.checkInvalidFieldAccess(true);
+        
+        select
+            firstOnly
+                // Specify explicit field selection for read-only data source.
+                AotName, RecId
+            from
+                securityRole_
+        where
+            securityRole_.AotName == _securityRole.AotName
+        ;
+        
+        if (securityRole_)
+        {
+            return securityRole_;
+        }
+        
+        return securityRole_;
+    }
+    private OMInternalOrganization LookForUniqueKeyMatch_DS3(SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity, OMInternalOrganization _oMInternalOrganization)
+    {
+        OMInternalOrganization oMInternalOrganization_ = null;
+        
+        // Ensuring only fields in the selection list should be accessed for read-only data source.
+        oMInternalOrganization_.checkInvalidFieldAccess(true);
+        
+        select
+            firstOnly
+                // Specify explicit field selection for read-only data source.
+                OrganizationType, RecId
+            from
+                oMInternalOrganization_
+        where
+            oMInternalOrganization_.RecId == _oMInternalOrganization.RecId
+        ;
+        
+        if (oMInternalOrganization_)
+        {
+            return oMInternalOrganization_;
+        }
+        
+        return oMInternalOrganization_;
+    }
+    private OMHierarchyType LookForUniqueKeyMatch_DS4(SystemSecurityUserRoleOrganizationEntity _systemSecurityUserRoleOrganizationEntity, OMHierarchyType _oMHierarchyType)
+    {
+        OMHierarchyType oMHierarchyType_ = null;
+        
+        // Ensuring only fields in the selection list should be accessed for read-only data source.
+        oMHierarchyType_.checkInvalidFieldAccess(true);
+        
+        select
+            firstOnly
+                // Specify explicit field selection for read-only data source.
+                Name, RecId
+            from
+                oMHierarchyType_
+        where
+            oMHierarchyType_.Name == _oMHierarchyType.Name
+        ;
+        
+        if (oMHierarchyType_)
+        {
+            return oMHierarchyType_;
+        }
+        
+        return oMHierarchyType_;
+    }
+
+}
+

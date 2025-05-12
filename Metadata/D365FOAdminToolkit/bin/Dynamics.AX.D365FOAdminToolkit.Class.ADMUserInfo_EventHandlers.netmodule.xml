@@ -1,0 +1,10 @@
+<EventHandlers>
+  <BusinessEventHandlers />
+  <DataEventHandlers>
+    <DataEventHandler tableName="UserInfo" dataEventType="Deleting" eventHandlerElementName="ADMUserInfo_EventHandlers" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="UserInfo_onDeleting" />
+  </DataEventHandlers>
+  <FormEventHandlers />
+  <FormControlEventHandlers />
+  <FormDataSourceEventHandler />
+  <FormDataFieldEventHandler />
+</EventHandlers>

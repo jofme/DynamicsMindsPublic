@@ -1,0 +1,10 @@
+<EventHandlers>
+  <BusinessEventHandlers>
+    <EventHandler delegateElementName="ApplicationStartupEventManager" delegateElementTypeId="ClassTypeId" delegateMethodName="onInteractiveSessionCreated" eventHandlerElementName="ADMEntraIdGroupUserSynchronization" eventHandlerElementTypeId="ClassTypeId" eventHandlerMethodName="onInteractiveSessionCreated" delegateTypeId="DelegateTypeId" />
+  </BusinessEventHandlers>
+  <DataEventHandlers />
+  <FormEventHandlers />
+  <FormControlEventHandlers />
+  <FormDataSourceEventHandler />
+  <FormDataFieldEventHandler />
+</EventHandlers>

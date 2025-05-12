@@ -12,7 +12,7 @@ on:
         type: choice
         options:
          - "*"
-         - "NIBPlayground"
+         - "Playground"
 
 
 permissions:
